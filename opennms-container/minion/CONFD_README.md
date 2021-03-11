@@ -215,29 +215,6 @@ process-env:
 
 Can be used to specify an arbitrary list of Java options. Config specified is written to file `/opt/minion/etc/minion-process.env` that contains `key=value` pairs that are set in the environment of the Minion process..
 
-## Test/Develop confd templates
-`confd` template changes can locally be tested by running a Minion container and mapping the corresponding files into the container. The following procedure might be useful:
-
-1. A Minion Docker image is required. It can be downloaded from a build in CircleCI.
-1. Load the image into Docker: `docker load minion.oci`
-1. Create a `docker-compose.yaml` file in the parent folder of the checked out `opennms` repo. An example compose file is given below
-1. Start the image: `docker-compose up -d`
-1. Open a shell in the container using `docker exec -ti minion bash` or look at the logs `docker logs minion`
-1. If the result is not yet satisfactory then remove the container by `docker rm -f minion`, edit the files in your IDE, and start the image again
-
-
-```yaml
-version: '3'
-services:
-  minion:
-    image: minion
-    container_name: minion
-    volumes:
-      - ${PWD}/minion-config.yaml:/opt/minion/minion-config.yaml
-      - ${PWD}/opennms/opennms-container/minion/container-fs/confd/conf.d/org.opennms.minion.process-env.toml:/opt/minion/confd/conf.d/org.opennms.minion.process-env.toml
-      - ${PWD}/opennms/opennms-container/minion/container-fs/confd/templates/org.opennms.minion.process-env.tmpl:/opt/minion/confd/templates/org.opennms.minion.process-env.tmpl
-      - ${PWD}/opennms/opennms-container/minion/container-fs/entrypoint.sh:/entrypoint.sh
-```
 ## Prometheus JMX Exporter
 
 To provide an out of band management of the JVM with the Minion process, the Prometheus JMX exporter is shipped with this container image.
@@ -263,4 +240,28 @@ The Minion container images comes with the Prometheus JMX exporter and can be en
 process-env:
   java-opts:
     - -javaagent:/opt/prom-jmx-exporter/jmx_prometheus_javaagent.jar=9299:/opt/prom-jmx-exporter/config.yaml
+```
+
+## Test/Develop confd templates
+`confd` template changes can locally be tested by running a Minion container and mapping the corresponding files into the container. The following procedure might be useful:
+
+1. A Minion Docker image is required. It can be downloaded from a build in CircleCI.
+1. Load the image into Docker: `docker load minion.oci`
+1. Create a `docker-compose.yaml` file in the parent folder of the checked out `opennms` repo. An example compose file is given below
+1. Start the image: `docker-compose up -d`
+1. Open a shell in the container using `docker exec -ti minion bash` or look at the logs `docker logs minion`
+1. If the result is not yet satisfactory then remove the container by `docker rm -f minion`, edit the files in your IDE, and start the image again
+
+
+```yaml
+version: '3'
+services:
+  minion:
+    image: minion
+    container_name: minion
+    volumes:
+      - ${PWD}/minion-config.yaml:/opt/minion/minion-config.yaml
+      - ${PWD}/opennms/opennms-container/minion/container-fs/confd/conf.d/org.opennms.minion.process-env.toml:/opt/minion/confd/conf.d/org.opennms.minion.process-env.toml
+      - ${PWD}/opennms/opennms-container/minion/container-fs/confd/templates/org.opennms.minion.process-env.tmpl:/opt/minion/confd/templates/org.opennms.minion.process-env.tmpl
+      - ${PWD}/opennms/opennms-container/minion/container-fs/entrypoint.sh:/entrypoint.sh
 ```
