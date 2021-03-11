@@ -193,9 +193,21 @@ public abstract class AbstractThresholdEvaluatorState<T extends AbstractThreshol
         if (threshold.getRearmedUEI().isPresent()) {
             hasher.putString(threshold.getRearmedUEI().get(), StandardCharsets.UTF_8);
         }
-        hasher.putDouble(threshold.getValue());
-        hasher.putDouble(threshold.getRearm());
-        hasher.putInt(threshold.getTrigger());
+        if (threshold.getValue() == null) {
+            hasher.putString(threshold.getValueString(), StandardCharsets.UTF_8);
+        } else {
+            hasher.putDouble(threshold.getValue());
+        }
+        if (threshold.getRearm() == null) {
+            hasher.putString(threshold.getRearmString(), StandardCharsets.UTF_8);
+        } else {
+            hasher.putDouble(threshold.getRearm());
+        }
+        if (threshold.getTrigger() == null) {
+            hasher.putString(threshold.getTriggerString(), StandardCharsets.UTF_8);
+        } else {
+            hasher.putInt(threshold.getTrigger());
+        }
         return hasher.hashCode();
     }
 
