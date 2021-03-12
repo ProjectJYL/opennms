@@ -223,14 +223,17 @@ The default configuration is set to the following values and can be set in the `
 ```yaml
 ---
 java:
-    agent:
-        prom-jmx-exporter:
-            jmxUrl: service:jmx:rmi:///jndi/rmi://127.0.0.1:1299/karaf-minion
-            username: admin
-            password: admin
-            lowerCaseOutputName: true
-            lowercaseOutputLabelNames: true
-            whitelistObjectNames: [ "org.opennms.core.ipc.sink.producer:*", "org.opennms.netmgt.dnsresolver.netty:*", "org.opennms.netmgt.telemetry:*" ]
+  agent:
+    prom-jmx-exporter:
+      jmxUrl: 'service:jmx:rmi:///jndi/rmi://127.0.0.1:1299/karaf-minion'
+      username: 'admin'
+      password: 'admin'
+      lowerCaseOutputName: 'true'
+      lowercaseOutputLabelNames: 'true'
+      whitelistObjectNames:
+      - "org.opennms.core.ipc.sink.producer:*"
+      - "org.opennms.netmgt.dnsresolver.netty:*"
+      - "org.opennms.netmgt.telemetry:*"
 ```
 
 The Minion container images comes with the Prometheus JMX exporter and can be enabled with:
